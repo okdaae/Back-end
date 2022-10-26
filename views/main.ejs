@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Documnet</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <%-include("navbar.ejs")%>
+    <form>
+      <p>개인정보</p>
+      <p>아이디<input type="text" id="id" /></p>
+      <p>비밀번호<input type="text" id="pw" /></p>
+      <p>이름<input type="text" id="name" /></p>
+      <p>나이<input type="text" id="age" /></p>
+      <p>
+        프로필 사진<input
+          type="file"
+          name="userfile"
+          id="file"
+          multiple
+          accept="image/jpg, image/png, image/jpeg"
+        />
+      </p>
+      <button type="reset">초기화</button>
+      <!-- <input type="file" name="userfile" id="file" multiple /> -->
+      <button type="button" onclick="fileupload()">회원가입</button>
+    </form>
+    <img src="" alt="" />
+
+    <script>
+      function fileupload() {
+        const formData = new FormData()
+        const file = document.querySelector('#file')
+        var form = document.querySelector('form')
+        formData.append('id', form.id.value)
+        formData.append('pw', form.id.value)
+        formData.append('name', form.id.value)
+        formData.append('age', form.id.value)
+        formData.append('userfile', file.files[0])
+
+        axios({
+          Headers: {
+            'Content-Type': 'multipart/FormData',
+          },
+          url: '/upload',
+          method: 'post',
+          data: formData,
+        }).then((res) => {
+          const img = document.querySelector('img')
+          img.src = '/uploads/' + res.data
+        })
+      }
+    </script>
+  </body>
+</html>
